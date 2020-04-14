@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import '../css/App.css';
+import CustomTextInput from "./CustomTextInput";
 
 import Header from "./Header"
 
@@ -20,6 +21,7 @@ class App extends Component {
       <div className="App">
         <Header changeTitle={this.changeTitle.bind(this)} title={this.state.title} />
         <p>My first body...  Enjoy it!</p>
+        <CustomTextInput />
       </div>
     );
   }
