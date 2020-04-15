@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+.Div-add-task {
+  background: #61fb80;
+}
+
+.Div-update-task {
+  background: #fbfb61;
+}

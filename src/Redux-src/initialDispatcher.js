@@ -17,7 +17,7 @@ const intialTodos = [
       id: 1
     }, 
  ]
- 
+
 function todos(state = intialTodos, action) {
     switch (action.type) {
         case ADD_TODO:
@@ -30,7 +30,7 @@ function todos(state = intialTodos, action) {
             ];
         case TOGGLE_TODO:
             return state.map((todo, index) => {
-                if (index === action.index) {
+                if (index === parseInt(action.index)) {
                     return Object.assign({}, todo, {
                         completed: !todo.completed,
                     });

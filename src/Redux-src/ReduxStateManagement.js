@@ -25,7 +25,8 @@ class ReduxStateManagement extends React.Component {
             ]
         };
         this.state = {
-            task: "My default task"
+            task: "My default task",
+            id: 0
         };
     }
 
@@ -34,7 +35,7 @@ class ReduxStateManagement extends React.Component {
     }
     
     toggleTodo(index) {
-        return { type: TOGGLE_TODO, index }
+        return { type: TOGGLE_TODO, index: index }
     }
     
     setVisibilityFilter(filter) {
@@ -55,14 +56,36 @@ class ReduxStateManagement extends React.Component {
         });
     }
 
+    toggleTask() {
+        console.log('Task to update', this.state.id);
+        this.intialTodos = todoApp(this.intialTodos, this.toggleTodo(this.state.id));
+
+        console.log(`new state: ${JSON.stringify(this.intialTodos)}`);
+    }
+
+    handleChangeId(e) {
+        const taskIdToUpdate = e.target.value;
+        this.setState({ 
+            id : taskIdToUpdate
+        });
+    }
+
     render() {
         return (
             <div>
+                <p className="Div-add-task">
                 <input type="text" value={this.state.task} onChange={this.handleChange.bind(this)} />
                 <br /><br />
                 <input type="button" value="Add a new Todo Item" onClick={() => this.addTask()}
                 />
-            </div>
+                </p>
+                <p className="Div-update-task">
+                <input type="text" value={this.state.id} onChange={this.handleChangeId.bind(this)} />
+                <br /><br />
+                <input type="button" value="Mark a task in the list to be completed" onClick={() => this.toggleTask()}
+                />
+                </p>
+            </div>            
         );
     }
 }
