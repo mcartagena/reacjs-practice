@@ -2,7 +2,10 @@
   "name": "react-events",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5"
+  },
   "scripts": {
     "test": "jest",
     "build-dev": "webpack",
