@@ -4,6 +4,9 @@ import todoApp from "./initialDispatcher";
 const ADD_TODO = 'ADD_TODO';
 const TOGGLE_TODO = 'TOGGLE_TODO';
 const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
+const VisibilityFilters = {
+    SHOW_ACTIVE: 'SHOW_ACTIVE'
+}
 
 class ReduxStateManagement extends React.Component {
 
@@ -63,6 +66,11 @@ class ReduxStateManagement extends React.Component {
         console.log(`new state: ${JSON.stringify(this.intialTodos)}`);
     }
 
+    viewActiveTask() {
+        this.intialTodos = todoApp(this.intialTodos, this.setVisibilityFilter(VisibilityFilters.SHOW_ACTIVE))
+        console.log(`new state: ${JSON.stringify(this.intialTodos)}`);
+    }   
+
     handleChangeId(e) {
         const taskIdToUpdate = e.target.value;
         this.setState({ 
@@ -85,6 +93,11 @@ class ReduxStateManagement extends React.Component {
                 <input type="button" value="Mark a task in the list to be completed" onClick={() => this.toggleTask()}
                 />
                 </p>
+                <p className="Div-filter-task">
+                <br /><br />
+                <input type="button" value="View all active tasks" onClick={() => this.viewActiveTask()}
+                />
+                </p>                
             </div>            
         );
     }
