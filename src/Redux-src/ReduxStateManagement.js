@@ -1,6 +1,15 @@
 import React from "react";
 import todoApp from "./initialDispatcher";
 
+import { createStore } from 'redux'
+
+let store = createStore(todoApp);
+let unsubscribe = store.subscribe(() =>
+    console.log(`
+      ${JSON.stringify(store.getState())}
+           `)
+);
+
 const ADD_TODO = 'ADD_TODO';
 const TOGGLE_TODO = 'TOGGLE_TODO';
 const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
@@ -19,31 +28,32 @@ class ReduxStateManagement extends React.Component {
                     text: 'Pay Utility Bill',
                     completed: true,
                     id: 0
-                  },
-                  {
+                },
+                {
                     text: 'Initiate Vendor Discussion',
                     completed: false,
                     id: 1
-                  }, 
+                },
             ]
         };
         this.state = {
             task: "My default task",
             id: 0
         };
+        console.log('Store getState: ', store.getState());
     }
 
     addTodo(text) {
         return { type: ADD_TODO, text }
     }
-    
+
     toggleTodo(index) {
         return { type: TOGGLE_TODO, index: index }
     }
-    
+
     setVisibilityFilter(filter) {
         return { type: SET_VISIBILITY_FILTER, filter }
-    }    
+    }
 
     addTask() {
         console.log('Value to add', this.state.task);
@@ -54,8 +64,8 @@ class ReduxStateManagement extends React.Component {
 
     handleChange(e) {
         const taskToAdd = e.target.value;
-        this.setState({ 
-            task : taskToAdd
+        this.setState({
+            task: taskToAdd
         });
     }
 
@@ -69,36 +79,56 @@ class ReduxStateManagement extends React.Component {
     viewActiveTask() {
         this.intialTodos = todoApp(this.intialTodos, this.setVisibilityFilter(VisibilityFilters.SHOW_ACTIVE))
         console.log(`new state: ${JSON.stringify(this.intialTodos)}`);
-    }   
+    }
 
     handleChangeId(e) {
         const taskIdToUpdate = e.target.value;
-        this.setState({ 
-            id : taskIdToUpdate
+        this.setState({
+            id: taskIdToUpdate
         });
+    }
+
+    dispatchActions() {
+        store.dispatch(this.addTodo('Read a Book'));
+        store.dispatch(this.setVisibilityFilter('SHOW_ACTIVE'));
+    }
+
+    unsubscribeStore() {
+        unsubscribe();
+        store.dispatch(this.addTodo('Learn Redux'));
+        store.dispatch(this.toggleTodo(1));
     }
 
     render() {
         return (
             <div>
                 <p className="Div-add-task">
-                <input type="text" value={this.state.task} onChange={this.handleChange.bind(this)} />
-                <br /><br />
-                <input type="button" value="Add a new Todo Item" onClick={() => this.addTask()}
-                />
+                    <input type="text" value={this.state.task} onChange={this.handleChange.bind(this)} />
+                    <br /><br />
+                    <input type="button" value="Add a new Todo Item" onClick={() => this.addTask()}
+                    />
                 </p>
                 <p className="Div-update-task">
-                <input type="text" value={this.state.id} onChange={this.handleChangeId.bind(this)} />
-                <br /><br />
-                <input type="button" value="Mark a task in the list to be completed" onClick={() => this.toggleTask()}
-                />
+                    <input type="text" value={this.state.id} onChange={this.handleChangeId.bind(this)} />
+                    <br /><br />
+                    <input type="button" value="Mark a task in the list to be completed" onClick={() => this.toggleTask()}
+                    />
                 </p>
                 <p className="Div-filter-task">
-                <br /><br />
-                <input type="button" value="View all active tasks" onClick={() => this.viewActiveTask()}
-                />
-                </p>                
-            </div>            
+                    <br /><br />
+                    <input type="button" value="View all active tasks" onClick={() => this.viewActiveTask()}
+                    />
+                </p>
+                <p className="Div-add-task">
+                    <input type="button" value="Dispatch actions" onClick={() => this.dispatchActions()}
+                    />
+                </p>
+                <p className="Div-update-task">
+                    <br /><br />
+                    <input type="button" value="Stop listening and dispatch actions" onClick={() => this.unsubscribeStore()}
+                    />
+                </p>
+            </div>
         );
     }
 }
